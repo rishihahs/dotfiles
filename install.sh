@@ -3,6 +3,12 @@
 CURRENT_DIR="${0:a:h}"
 setopt EXTENDED_GLOB
 
+# Download Prezto
+if [[ -d "${CURRENT_DIR}/dotfiles/.zprezto" ]]; then
+    rm -rf "${CURRENT_DIR}/dotfiles/.zprezto"
+fi
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${CURRENT_DIR}/dotfiles/.zprezto"
+
 # Symlink prezto files to home directory
 for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
   ln -sf "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
