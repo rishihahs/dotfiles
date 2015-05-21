@@ -146,8 +146,8 @@ if [ -n "$INSIDE_EMACS" ]; then
 fi
 
 # Hadoop
-alias hstart="/usr/local/Cellar/hadoop/2.6.0/sbin/start-dfs.sh;/usr/local/Cellar/hadoop/2.6.0/sbin/start-yarn.sh"
-alias hstop="/usr/local/Cellar/hadoop/2.6.0/sbin/stop-yarn.sh;/usr/local/Cellar/hadoop/2.6.0/sbin/stop-dfs.sh"
+alias hstart="/usr/local/Cellar/hadoop/2.7.0/sbin/start-dfs.sh;/usr/local/Cellar/hadoop/2.7.0/sbin/start-yarn.sh"
+alias hstop="/usr/local/Cellar/hadoop/2.7.0/sbin/stop-yarn.sh;/usr/local/Cellar/hadoop/2.7.0/sbin/stop-dfs.sh"
 
 # Python Anaconda
 export PATH="$HOME/anaconda/bin:$PATH"
@@ -160,3 +160,6 @@ export PATH="$PATH:/Applications/MATLAB_R2014b.app/bin"
 export GOPATH="$HOME/code/go"
 export PATH="$PATH:$GOPATH/bin"
 export PATH=$PATH:/usr/local/opt/go/libexec/bin
+
+# added by travis gem
+[ -f "$HOME/.travis/travis.sh" ] && source "$HOME/.travis/travis.sh"
