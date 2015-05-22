@@ -17,6 +17,8 @@
      ;; Uncomment a layer name and press C-c C-c to install it
      ;; --------------------------------------------------------
      osx
+     syntax-checking
+     scala
      ;; auto-completion
      ;; better-defaults
      ;; (git :variables
@@ -140,6 +142,21 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  "Scala flycheck settings"
+  (setq flycheck-scalastyle-jar "/usr/local/Cellar/scalastyle/0.7.0/libexec/scalastyle_2.11-0.7.0-batch.jar")
+
+  (defcustom ensime-inf-default-cmd-line '("spark-shell")
+    "Default command to launch the repl, used when not connected to an ENSIME
+server."
+    :type 'string
+    :group 'ensime-inf)
+
+  (defcustom ensime-inf-cmd-template '("--master local[*]" :java :java-flags "-classpath" :classpath "-Dscala.usejavacp=true" "scala.tools.nsc.MainGenericRunner" "-Xnojline")
+    "The command to launch the scala interpreter. Keywords will be replaced
+with data loaded from server."
+    :type 'string
+    :group 'ensime-inf)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
