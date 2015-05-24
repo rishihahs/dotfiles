@@ -152,7 +152,7 @@ server."
     :type 'string
     :group 'ensime-inf)
 
-  (defcustom ensime-inf-cmd-template '("--master local[*]" :java :java-flags "-classpath" :classpath "-Dscala.usejavacp=true" "scala.tools.nsc.MainGenericRunner" "-Xnojline")
+  (defcustom ensime-inf-cmd-template '(:java :java-flags "-classpath" (concat :classpath ":/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-api-jdo-3.2.6.jar:/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-core-3.2.10.jar:/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-rdbms-3.2.9.jar:/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/spark-1.3.1-yarn-shuffle.jar:/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/spark-assembly-1.3.1-hadoop2.6.0.jar:/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/spark-examples-1.3.1-hadoop2.6.0.jar") "-Dscala.usejavacp=true" "org.apache.spark.repl.Main" "-Xnojline")
     "The command to launch the scala interpreter. Keywords will be replaced
 with data loaded from server."
     :type 'string
