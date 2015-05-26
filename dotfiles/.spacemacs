@@ -154,11 +154,13 @@ server."
 
   (setenv "HADOOP_CONF_DIR" "/usr/local/Cellar/hadoop/2.7.0/libexec/etc/hadoop")
 
+  (defvar ensime-spark-libs (list "/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-api-jdo-3.2.6.jar" "/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-core-3.2.10.jar" "/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/datanucleus-rdbms-3.2.9.jar" "/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/spark-1.3.1-yarn-shuffle.jar" "/usr/local/Cellar/apache-spark/1.3.1_1/libexec/lib/spark-assembly-1.3.1-hadoop2.6.0.jar" "/usr/local/Cellar/hadoop/2.7.0/libexec/etc/hadoop"))
+
   (eval-after-load "ensime" '(defun ensime-inf-repl-config (&optional config)
                               (let ((config (or config (ensime-config)))
                                     (get-deps (lambda (c)
                                                (cons (plist-get c :target)
-                                                (plist-get c :spark-shell-libs)))))
+                                                ensime-spark-libs))))
                                (list
                                 :java (concat (plist-get config :java-home) "/bin/java")
                                 :java-flags (or (plist-get config :java-flags) ensime-default-java-flags)
