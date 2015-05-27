@@ -67,3 +67,7 @@ local.properties
 
 ## Directory-based project format:
 .idea/
+
+.ensime
+
+.ensime_cache/
