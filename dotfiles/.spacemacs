@@ -169,7 +169,7 @@ server."
                                      (funcall get-deps config)
                                      (mapcar get-deps (plist-get config :subprojects))))))))
 
-  (defcustom ensime-inf-cmd-template '(:java "-classpath" :classpath "-Dscala.usejavacp=true" :java-flags "org.apache.spark.deploy.SparkSubmit" "--class" "org.apache.spark.repl.Main" "--master" "yarn-client" "--driver-memory" "6g" "spark-shell" "-Xnojline")
+  (defcustom ensime-inf-cmd-template '(:java "-classpath" :classpath "-Dscala.usejavacp=true" :java-flags "org.apache.spark.deploy.SparkSubmit" "--class" "org.apache.spark.repl.Main" "--master" "local[*]" "--driver-memory" "6g" "spark-shell" "-Xnojline")
     "The command to launch the scala interpreter. Keywords will be replaced
 with data loaded from server."
     :type 'string
