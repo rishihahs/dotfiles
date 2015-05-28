@@ -159,8 +159,9 @@ server."
   (eval-after-load "ensime" '(defun ensime-inf-repl-config (&optional config)
                               (let ((config (or config (ensime-config)))
                                     (get-deps (lambda (c)
-                                               (cons (plist-get c :target)
-                                                ensime-spark-libs))))
+                                               (append (plist-get c :compile-deps)
+                                                (cons (plist-get c :target)
+                                                 ensime-spark-libs)))))
                                (list
                                 :java (concat (plist-get config :java-home) "/bin/java")
                                 :java-flags (or (plist-get config :java-flags) ensime-default-java-flags)
