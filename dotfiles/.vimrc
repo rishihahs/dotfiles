@@ -132,6 +132,7 @@ Plugin 'jelera/vim-javascript-syntax'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'rdnetto/YCM-Generator'
 
 " --------------- End Vundle Plugins ---------------------
 
