@@ -1,63 +1,59 @@
-"Begin dein Scripts-----------------------------
-
-filetype off
-
-" Required:
-set runtimepath^=~/.config/nvim/repos/github.com/Shougo/dein.vim
+"dein Scripts-----------------------------
+if &compatible
+  set nocompatible               " Be iMproved
+endif
 
 " Required:
-call dein#begin(expand('~/.config/nvim'))
-
-" Let dein manage dein
-" Required:
-call dein#add('Shougo/dein.vim')
-
-"--- Plugins ---
-" Solarized Theme
-call dein#add('skwp/vim-colors-solarized')
-
-" Brackets/parens auto-completion
-call dein#add('Raimondi/delimitMate')
-
-" Vimproc - required for other plugins
-call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
-
-" Unite.vim
-call dein#add('Shougo/unite.vim')
-
-" Unite Yank History
-call dein#add('Shougo/neoyank.vim')
-
-" Tmux/Vim navigation with Ctrl-HJKL
-call dein#add('christoomey/vim-tmux-navigator')
-
-" Deoplete
-call dein#add('Shougo/deoplete.nvim')
-
-" Clang completion
-call dein#add('rishihahs/deoplete-clang')
-
-" Haskell
-call dein#add('neovimhaskell/haskell-vim',
-      \{'on_ft': 'haskell'})
-call dein#add('enomsg/vim-haskellConcealPlus',
-      \{'on_ft': 'haskell'})
-call dein#add('eagletmt/neco-ghc',
-      \{'on_ft': 'haskell'})
-
-
-"--- End Plugins ---
+set runtimepath+=~/.config/nvim/repos/github.com/Shougo/dein.vim
 
 " Required:
-call dein#end()
+if dein#load_state(expand('~/.config/nvim'))
+  call dein#begin(expand('~/.config/nvim'))
+
+  " Let dein manage dein
+  " Required:
+  call dein#add(expand('~/.config/nvim/repos/github.com/Shougo/dein.vim'))
+
+  " Add or remove your plugins here:
+  " Solarized Theme
+  call dein#add('iCyMind/NeoSolarized')
+
+  " Brackets/parens auto-completion
+  call dein#add('Raimondi/delimitMate')
+
+  " Vimproc - required for other plugins
+  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
+
+  " Denite.nvim
+  call dein#add('Shougo/denite.nvim')
+
+  " Easymotion
+  call dein#add('easymotion/vim-easymotion')
+
+  " Tmux/Vim navigation with Ctrl-HJKL
+  call dein#add('christoomey/vim-tmux-navigator')
+
+  " Deoplete
+  call dein#add('Shougo/deoplete.nvim')
+
+  " Ale
+  call dein#add('w0rp/ale')
+
+  " Required:
+  call dein#end()
+  call dein#save_state()
+endif
 
 " Required:
 filetype plugin indent on
+syntax enable
 
 " If you want to install not installed plugins on startup.
 if dein#check_install()
   call dein#install()
 endif
+
+"End dein Scripts-------------------------
 
 " TODO: Call once a week or so
 " If you want to update not updated plugins on startup.
@@ -83,6 +79,9 @@ set visualbell                  "No sounds
 set nobackup
 set nowritebackup
 set noswapfile
+
+" Enable truecolor
+set termguicolors
 
 " Set Leader
 let mapleader=","
@@ -118,52 +117,80 @@ if has('persistent_undo')
   set undofile
 endif
 
-colorscheme solarized
-set background=dark
+" Smooth scrolling
+set mouse=a
+nnoremap <C-Y> <ScrollWheelUp>
+nnoremap <C-E> <ScrollWheelDown>
+nnoremap <S-K> 5<C-Y>
+nnoremap <S-J> 5<C-E>
 
 " Set neovim python3
-let g:python3_host_prog = expand("~/anaconda/envs/python3/bin/python")
+let g:python3_host_prog = expand("~/anaconda2/envs/anaconda3/bin/python")
 
 " ================ Plugin Config =====================
 
-" ----------- Unite Config -----------
+" Colorscheme
+set background=dark
+colorscheme NeoSolarized
+
+" ----------- Easymotion Config -----------
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key bindings.
+" `f{char}{label}`
+nmap f <Plug>(easymotion-overwin-f)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" Type Enter and jump to first match
+let g:EasyMotion_enter_jump_first = 1
+
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+" ----------- Denite Config -----------
 " map <leader>u as the unite prefix.
 nnoremap [unite] <Nop>
 nmap <leader>u [unite]
 
 if executable('ag')
-  " Unite filelist command (use ag)
-  let g:unite_source_rec_async_command = ['ag', '--follow', '--nocolor', '--nogroup', '--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr', '--hidden', '-g', '']
+  " The Silver Searcher
+	call denite#custom#var('file_rec', 'command',
+		\ ['ag', '--follow', '--nocolor', '--nogroup', '--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr', '--hidden', '-g', ''])
 
-  " Use ag for grep
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '-i --vimgrep --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-  let g:unite_source_grep_recursive_opt = ''
+	call denite#custom#var('grep', 'command', ['ag'])
+	call denite#custom#var('grep', 'recursive_opts', [])
+	call denite#custom#var('grep', 'pattern_opt', [])
+	call denite#custom#var('grep', 'separator', ['--'])
+	call denite#custom#var('grep', 'final_opts', [])
+	call denite#custom#var('grep', 'default_opts',
+		\ [ '-i', '--vimgrep', '--smart-case', '--hidden', '--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr' ])
 endif
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap [unite]f :<C-u>Unite -buffer-name=files -start-insert file_rec/async:!<cr>
-
-" Switch between buffers
-nnoremap [unite]b :<C-u>Unite -quick-match -no-split buffer<cr>
-
-" Grep current directory
-nnoremap [unite]g :<C-u>Unite -auto-preview -no-empty grep<cr>
-
-" Unite yank history
-nnoremap [unite]y :<C-u>Unite -quick-match history/yank<cr>
+" Switch between files and buffers
+call denite#custom#source('buffer,file_rec,grep,line', 'sorters', ['sorter_sublime'])
+call denite#custom#source('buffer,file_rec,grep,line', 'matchers', ['matcher_fuzzy'])
+nnoremap [unite]f :<C-u>Denite buffer file_rec<cr>
 
 " Bind Ctrl-P to [unite]f ([unite] = <Leader>u)
 map <C-p> [unite]f
 
-nmap [unite]p <Plug>(unite_print_message_log)
+" Grep current directory
+nnoremap [unite]g :<C-u>Denite -auto-preview -no-empty grep<cr>
 
-call unite#custom#profile('default', 'context', {
-  \ 'prompt' : '  →  '
-  \ })
+" Cycle through denite prompts with up and down
+call denite#custom#map('insert', '<Up>', '<denite:move_to_previous_line>', 'noremap')
+call denite#custom#map('insert', '<Down>', '<denite:move_to_next_line>', 'noremap')
 
-" Unite Input Prompt Style
-hi link uniteInputPrompt Special
+call denite#custom#option('_', {
+	\ 'prompt': '  →  ',
+	\ 'empty': 0,
+  \ 'short_source_names': 1,
+  \ 'direction': 'dynamictop',
+  \ 'statusline': 0,
+	\ 'winheight': 16,
+	\ })
 
 " ----------- Deoplete config ----------
 " Enable deoplete
@@ -196,15 +223,3 @@ inoremap <silent><expr> <C-Space> pumvisible() ? "\<C-n>" : deoplete#mappings#ma
 
 " Hack to fix E29: No inserted text yet
 imap <C-@> <C-Space>
-
-" deoplete-clang opions
-let g:deoplete#sources#clang#libclang_path = "/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
-let g:deoplete#sources#clang#clang_header = "/Library/Developer/CommandLineTools/usr/lib/clang"
-
-" ----------- Haskell Config -----------
-" Haskell unicode conversions
-" let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
-let hscoptions="t"
-
-" Disable haskell-vim omnifunc (since we want to use neco-ghc)
-let g:haskellmode_completion_ghc = 0
