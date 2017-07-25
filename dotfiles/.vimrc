@@ -21,13 +21,10 @@ if dein#load_state(expand('~/.config/nvim'))
   " Brackets/parens auto-completion
   call dein#add('Raimondi/delimitMate')
 
-  " Vimproc - required for other plugins
-  call dein#add('Shougo/vimproc.vim', {'build' : 'make'})
-
   " Denite.nvim
   call dein#add('Shougo/denite.nvim')
 
-  " Easymotion
+  " Easymotion (TODO: trying out)
   call dein#add('easymotion/vim-easymotion')
 
   " Tmux/Vim navigation with Ctrl-HJKL
@@ -36,8 +33,17 @@ if dein#load_state(expand('~/.config/nvim'))
   " Deoplete
   call dein#add('Shougo/deoplete.nvim')
 
+  " Jedi python completion
+  call dein#add('zchee/deoplete-jedi')
+
+  " Jedi-vim (used for goto, etc. not completion)
+  call dein#add('davidhalter/jedi-vim')
+
   " Ale
   call dein#add('w0rp/ale')
+
+  " Youtube
+  call dein#add('rishihahs/vim-youtube')
 
   " Required:
   call dein#end()
@@ -90,13 +96,10 @@ let mapleader=","
 noremap \ ,
 
 " Indentation
-set autoindent
-set smartindent
-set smarttab
-set tabstop=2
-set softtabstop=2
+set tabstop=4
+set softtabstop=4
 set expandtab      " tabs are spaces.
-set shiftwidth=2   " for visual indentation.
+set shiftwidth=4   " for visual indentation.
 
 " Display tabs and trailing spaces visually
 set list listchars=tab:\ \ ,trail:·
@@ -146,9 +149,6 @@ let g:EasyMotion_smartcase = 1
 " Type Enter and jump to first match
 let g:EasyMotion_enter_jump_first = 1
 
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-
 " ----------- Denite Config -----------
 " map <leader>u as the unite prefix.
 nnoremap [unite] <Nop>
@@ -166,6 +166,8 @@ if executable('ag')
 	call denite#custom#var('grep', 'final_opts', [])
 	call denite#custom#var('grep', 'default_opts',
 		\ [ '-i', '--vimgrep', '--smart-case', '--hidden', '--ignore', '.hg', '--ignore', '.svn', '--ignore', '.git', '--ignore', '.bzr' ])
+else
+  echohl WarningMsg | echomsg 'The silver searcher must be installed!' | echohl None
 endif
 
 " Switch between files and buffers
@@ -192,6 +194,11 @@ call denite#custom#option('_', {
 	\ 'winheight': 16,
 	\ })
 
+" ----------- Youtube -----------
+let g:VimYoutube_mpsyt = '~/anaconda2/envs/anaconda3/bin/mpsyt'
+let g:VimYoutube_size = 10
+map <Leader>y :<C-u>Youtube<CR>
+
 " ----------- Deoplete config ----------
 " Enable deoplete
 let g:deoplete#enable_at_startup = 1
@@ -206,7 +213,7 @@ let g:deoplete#enable_smart_case = 1
 let g:deoplete#disable_auto_complete = 1
 
 " Autoclose scratch window
-" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " omnifuncs
 augroup omnifuncs
@@ -223,3 +230,18 @@ inoremap <silent><expr> <C-Space> pumvisible() ? "\<C-n>" : deoplete#mappings#ma
 
 " Hack to fix E29: No inserted text yet
 imap <C-@> <C-Space>
+
+" ----------- Deoplete-jedi config ----------
+let g:deoplete#sources#jedi#show_docstring = 1
+
+" ----------- jedi-vim config ----------
+" map <leader>j as the jedi prefix.
+nnoremap [jedi] <Nop>
+nmap <leader>j [jedi]
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#completions_enabled = 0
+let g:jedi#goto_command = '[jedi]g'
+let g:jedi#goto_assignments_command = ''
+let g:jedi#documentation_command = ''
+let g:jedi#rename_command = ''
+let g:jedi#usages_command = ''
