@@ -39,6 +39,7 @@ zstyle ':prezto:load' pmodule \
   'ruby' \
   'syntax-highlighting' \
   'history-substring-search' \
+  'autosuggestions' \
   'ssh' \
   'prompt'
 
@@ -136,3 +137,5 @@ zstyle ':prezto:module:terminal' auto-title 'yes'
 # Auto start a session when Zsh is launched.
 # zstyle ':prezto:module:tmux' auto-start 'yes'
 
+zstyle ':prezto:module:autosuggestions:color' found 'fg=236'
+bindkey '^ ' autosuggest-accept

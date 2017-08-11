@@ -18,6 +18,7 @@ MACVIM_INSTALLED=$?
 if [ $MACVIM_INSTALLED -eq 0 ]; then
   alias vim="mvim -v"
 fi
+alias vim=nvim
 
 # Git Aliases
 alias gs='git status'
@@ -61,6 +62,9 @@ alias rm='nocorrect rm'
 # Setup prompt to use
 prompt powerline
 
+# Use Ctrl-Space to accept autosuggest
+bindkey '^ ' autosuggest-accept
+
 if [ -n "$INSIDE_EMACS" ]; then
   prompt sorin
 fi
@@ -68,8 +72,8 @@ fi
 ########################### Normal Customizations ##############################
 
 # Set EDITOR and VISUAL
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=nvim
+export VISUAL=nvim
 
 # Zsh completions
 fpath=(/usr/local/share/zsh-completions $fpath)
